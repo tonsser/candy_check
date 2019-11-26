@@ -1,4 +1,4 @@
-require 'google/apis/androidpublisher_v2'
+require 'google/apis/androidpublisher_v3'
 require 'google/api_client/auth/key_utils'
 
 require 'candy_check/play_store/client'
