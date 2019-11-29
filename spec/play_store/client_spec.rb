@@ -65,13 +65,13 @@ describe CandyCheck::PlayStore::Client do
   end
 
   def mock_request!(file)
-    stub_request(:get, 'https://www.googleapis.com/androidpublisher/v2/' \
+    stub_request(:get, 'https://www.googleapis.com/androidpublisher/v3/' \
       'applications/the_package/purchases/products/the_id/tokens/the_token')
       .to_return(fixture_content('play_store', file))
   end
 
   def mock_subscriptions_request!(file)
-    stub_request(:get, 'https://www.googleapis.com/androidpublisher/v2/' \
+    stub_request(:get, 'https://www.googleapis.com/androidpublisher/v3/' \
       'applications/the_package/purchases/subscriptions/' \
       'the_id/tokens/the_token')
       .to_return(fixture_content('play_store', file))

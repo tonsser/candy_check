@@ -34,7 +34,7 @@ module CandyCheck
       # If the config has a cache_file the client tries to load discovery
       def boot!
         @api_client =
-          Google::Apis::AndroidpublisherV2::AndroidPublisherService.new
+          Google::Apis::AndroidpublisherV3::AndroidPublisherService.new
         authorize!
       end
 
