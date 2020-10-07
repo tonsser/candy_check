@@ -51,8 +51,7 @@ module CandyCheck
       # @return [Unified::VerifiedResponse] if successful
       # @return [VerificationFailure] otherwise
       def verify_unified(receipt_data, secret = nil)
-        @verifier = Unified::Verification
-        fetch_receipt_information(receipt_data, secret)
+        fetch_receipt_information(Unified::Verification, [receipt_data, secret])
       end
 
       private
