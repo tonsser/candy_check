@@ -14,6 +14,16 @@ module CandyCheck
         )
         acknowledger.call!
       end
+
+      def acknowledge_subscription_purchase(package_name:, subscription_id:, token:)
+        acknowledger = CandyCheck::PlayStore::SubscriptionAcknowledgements::Acknowledgement.new(
+          package_name: package_name,
+          subscription_id: subscription_id,
+          token: token,
+          authorization: @authorization,
+        )
+        acknowledger.call!
+      end
     end
   end
 end
