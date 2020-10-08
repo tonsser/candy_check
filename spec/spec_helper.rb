@@ -22,6 +22,7 @@ require "pry"
 require_relative "support/with_fixtures"
 require_relative "support/with_temp_file"
 require_relative "support/with_command"
+require_relative 'support/app_store/with_mocked_response'
 
 ENV["DEBUG"] && Google::APIClient.logger.level = Logger::DEBUG
 

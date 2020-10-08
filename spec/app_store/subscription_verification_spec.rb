@@ -8,6 +8,8 @@ describe CandyCheck::AppStore::SubscriptionVerification do
   let(:data)     { 'some_data'   }
   let(:secret)   { 'some_secret' }
 
+  include AppStore::WithMockedResponse
+
   it 'returns a verification failure for status != 0' do
     with_mocked_response('status' => 21_000) do |client, recorded|
       result = subject.call!
