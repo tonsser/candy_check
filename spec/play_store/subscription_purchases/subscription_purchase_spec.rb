@@ -13,6 +13,7 @@ describe CandyCheck::PlayStore::SubscriptionPurchases::SubscriptionPurchase do
         developer_payload: "payload that gets stored and returned",
         cancel_reason: 0,
         payment_state: 1,
+        acknowledgement_state: 1,
       )
     end
 
@@ -195,7 +196,7 @@ describe CandyCheck::PlayStore::SubscriptionPurchases::SubscriptionPurchase do
         auto_renewing: false,
         developer_payload: "payload that gets stored and returned",
         cancel_reason: 0,
-        payment_state: 1,
+        payment_state: 2,
         price_currency_code: "SOMECODE",
         price_amount_micros: 0,
       )
@@ -207,6 +208,50 @@ describe CandyCheck::PlayStore::SubscriptionPurchases::SubscriptionPurchase do
 
     it "returns the price_currency_code" do
       subject.price_currency_code.must_equal "SOMECODE"
+    end
+  end
+
+  describe "acknowledged subscription" do
+    describe "when subscription is acknowledged" do
+      let(:fake_subscription_purchase) do
+        FakeSubscriptionPurchase.new(
+          kind: "androidpublisher#subscriptionPurchase",
+          start_time_millis: 1459540113244,
+          expiry_time_millis: 1462132088610,
+          auto_renewing: false,
+          developer_payload: "payload that gets stored and returned",
+          cancel_reason: 0,
+          payment_state: 1,
+          price_currency_code: "SOMECODE",
+          price_amount_micros: 0,
+          acknowledgement_state: 1,
+        )
+      end
+
+      it "is acknowledge?" do
+        subject.acknowledge?.must_be_true
+      end
+    end
+
+    describe "when subscription is not acknowledged" do
+      let(:fake_subscription_purchase) do
+        FakeSubscriptionPurchase.new(
+          kind: "androidpublisher#subscriptionPurchase",
+          start_time_millis: 1459540113244,
+          expiry_time_millis: 1462132088610,
+          auto_renewing: false,
+          developer_payload: "payload that gets stored and returned",
+          cancel_reason: 0,
+          payment_state: 1,
+          price_currency_code: "SOMECODE",
+          price_amount_micros: 0,
+          acknowledgement_state: 0,
+        )
+      end
+
+      it "is acknowledge?" do
+        subject.acknowledge?.must_be_false
+      end
     end
   end
 
@@ -224,6 +269,7 @@ describe CandyCheck::PlayStore::SubscriptionPurchases::SubscriptionPurchase do
       :payment_state,
       :price_amount_micros,
       :price_currency_code,
+      :acknowledgement_state,
     ].freeze
 
     attr_accessor *FIELDS

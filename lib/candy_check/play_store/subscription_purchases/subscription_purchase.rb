@@ -8,6 +8,26 @@ module CandyCheck
         # @return [Google::Apis::AndroidpublisherV3::SubscriptionPurchase] the raw subscription purchase from google-api-client
         attr_reader :subscription_purchase
 
+        PAYMENT_STATES = {
+          0 => "Payment pending",
+          1 => "Payment received",
+          2 => "Free trial",
+          3 => "Pending deferred upgrade/downgrade",
+        }.freeze
+
+        CANCEL_REASONS = {
+          0 => "User canceled the subscription",
+          1 => "Subscription was canceled by the system, " \
+               "for example because of a billing problem",
+          2 => "Subscription was replaced with a new subscription",
+          3 => "Subscription was canceled by the developer",
+        }.freeze
+
+        ACKNOWLEDGEMENT_STATES = {
+          0 => "Yet to be acknowledged",
+          1 => "Acknowledged",
+        }
+
         # The payment of the subscription is pending (paymentState)
         PAYMENT_PENDING = 0
         # The payment of the subscript is received (paymentState)
@@ -16,6 +36,10 @@ module CandyCheck
         PAYMENT_CANCELED = 0
         # The payment failed during processing (cancelReason)
         PAYMENT_FAILED = 1
+        # Free trial
+        PAYMENT_TRIAL = 2
+        # The subscription was acknowledged
+        ACKNOWLEDGED = 1
 
         # Initializes a new instance which bases on a JSON result
         # from Google's servers
@@ -35,8 +59,7 @@ module CandyCheck
         # renewal is activated.
         # @return [bool]
         def trial?
-          price_is_zero = price_amount_micros == 0
-          price_is_zero && payment_received?
+          payment_state == PAYMENT_TRIAL
         end
 
         # see if payment is ok
@@ -61,6 +84,14 @@ module CandyCheck
         # @return [bool]
         def canceled_by_user?
           cancel_reason == PAYMENT_CANCELED
+        end
+
+        def acknowledge?
+          acknowledgement_state == ACKNOWLEDGED
+        end
+
+        def acknowledgement_state
+          @subscription_purchase.acknowledgement_state
         end
 
         # Get number of overdue days. If this is negative, it is not overdue.
