@@ -228,8 +228,8 @@ describe CandyCheck::PlayStore::SubscriptionPurchases::SubscriptionPurchase do
         )
       end
 
-      it "is acknowledge?" do
-        subject.acknowledge?.must_be_true
+      it "is acknowledged?" do
+        subject.acknowledged?.must_be_true
       end
     end
 
@@ -249,8 +249,8 @@ describe CandyCheck::PlayStore::SubscriptionPurchases::SubscriptionPurchase do
         )
       end
 
-      it "is acknowledge?" do
-        subject.acknowledge?.must_be_false
+      it "is acknowledged?" do
+        subject.acknowledged?.must_be_false
       end
     end
   end

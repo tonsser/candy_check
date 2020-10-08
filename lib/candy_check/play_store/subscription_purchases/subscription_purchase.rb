@@ -86,7 +86,7 @@ module CandyCheck
           cancel_reason == PAYMENT_CANCELED
         end
 
-        def acknowledge?
+        def acknowledged?
           acknowledgement_state == ACKNOWLEDGED
         end
 
