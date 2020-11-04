@@ -119,6 +119,18 @@ describe CandyCheck::AppStore::Unified::VerifiedResponse do
           {
             'quantity'                 => '1',
             'product_id'               => 'com.app.product_id',
+            'transaction_id'           => '1000800359115121',
+            'original_transaction_id'  => '1000800359115195',
+            'purchase_date'            => '2017-12-16 08:17:54 Etc/GMT',
+            'original_purchase_date'   => '2017-12-14 16:29:35 Etc/GMT',
+            'expires_date'             => '2017-12-16 08:22:54 Etc/GMT',
+            'web_order_line_item_id'   => '1000000037216020',
+            'is_trial_period'          => 'false',
+            'is_in_intro_offer_period' => 'false'
+          },
+          {
+            'quantity'                 => '1',
+            'product_id'               => 'com.app.product_id',
             'transaction_id'           => '1000000359846977',
             'original_transaction_id'  => '1000800359115195',
             'purchase_date'            => '2017-12-15 08:17:54 Etc/GMT',
@@ -155,7 +167,7 @@ describe CandyCheck::AppStore::Unified::VerifiedResponse do
     end
 
     it '#latest_receipt_info' do
-      subject.latest_receipt_info.size.must_equal 2
+      subject.latest_receipt_info.size.must_equal 3
       subject.latest_receipt_info.last.must_be_instance_of(in_app_class)
     end
 
@@ -166,11 +178,11 @@ describe CandyCheck::AppStore::Unified::VerifiedResponse do
 
     it '#latest_transaction' do
       subject.latest_transaction.must_be_instance_of(in_app_class)
-      subject.latest_transaction.transaction_id.must_equal '1000000359846977'
+      subject.latest_transaction.transaction_id.must_equal '1000800359115121'
     end
 
     it '#expires_at' do
-      expected = DateTime.new(2017, 12, 15, 8, 22, 54)
+      expected = DateTime.new(2017, 12, 16, 8, 22, 54)
       subject.expires_at.must_equal expected
     end
 
@@ -197,7 +209,7 @@ describe CandyCheck::AppStore::Unified::VerifiedResponse do
     describe '#trial?' do
       describe 'when trial' do
         before do
-          response['latest_receipt_info'].last['is_trial_period'] = 'true'
+          response['latest_receipt_info'][1]['is_trial_period'] = 'true'
         end
 
         it { subject.trial?.must_be_true }
@@ -211,7 +223,7 @@ describe CandyCheck::AppStore::Unified::VerifiedResponse do
     describe '#canceled?' do
       describe 'when canceled' do
         before do
-          response['latest_receipt_info'].last['cancellation_date'] =
+          response['latest_receipt_info'][1]['cancellation_date'] =
             '2017-12-15 16:59:33 Etc/GMT'
         end
 

@@ -39,7 +39,7 @@ module CandyCheck
           @receipt = AppReceipt.new(response['receipt'])
           @latest_receipt_info = fetch_latest_receipt_info(response)
           @pending_renewal_info = fetch_pending_renewal_info(response)
-          @latest_transaction = latest_receipt_info.last
+          @latest_transaction = find_latest_transaction
           @expires_at = latest_transaction && latest_transaction.expires_date
           @pending_renewal_transaction = fetch_pending_renewal_transaction
         end
@@ -91,6 +91,10 @@ module CandyCheck
         end
 
         private
+
+        def find_latest_transaction
+          latest_receipt_info.sort_by(&:purchase_date).last
+        end
 
         def fetch_latest_receipt_info(response)
           return [] unless response['latest_receipt_info']
